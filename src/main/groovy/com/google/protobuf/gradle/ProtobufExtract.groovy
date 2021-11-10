@@ -39,6 +39,8 @@ import org.gradle.api.file.FileSystemLocation
 import org.gradle.api.file.FileTree
 import org.gradle.api.logging.Logger
 import org.gradle.api.model.ObjectFactory
+import org.gradle.api.tasks.CacheableTask
+import org.gradle.api.tasks.IgnoreEmptyDirectories
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.InputFiles
 import org.gradle.api.tasks.Internal
@@ -55,6 +57,7 @@ import javax.inject.Inject
  * Extracts proto files from a dependency configuration.
  */
 @CompileDynamic
+@CacheableTask
 abstract class ProtobufExtract extends DefaultTask {
 
   /**
@@ -88,6 +91,7 @@ abstract class ProtobufExtract extends DefaultTask {
    */
   @InputFiles
   @PathSensitive(PathSensitivity.RELATIVE)
+  @IgnoreEmptyDirectories
   FileTree getFilteredProtosFromInputs() {
     return filteredProtos.asFileTree.matching { PatternFilterable pattern -> pattern.include("**/*.proto") }
   }
